@@ -1,0 +1,18 @@
+h1 {
+	color: white;
+	background-color: #87CEFA;
+	text-align: center;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+	padding: 10px;
+}
+
+body {
+	background-color: #e6f3ff;
+	text-align: center;
+}
+
+.box {
+	border: 1px solid black;
+	min-height: 250px;
+	margin: 20px;
+}
