@@ -9,7 +9,11 @@ var player2Name = "";
 
 $(document).ready(function() {
 
-    // Initialize Firebase
+    //Hide choices.
+    showOrHideChoices(false, 1);
+    showOrHideChoices(false, 2);
+
+    // Initialize Firebase.
     var config = {
         apiKey: "AIzaSyCGedS-eXOY3alApgtMk_cWyFlaxtsEuwA",
         authDomain: "rockpaper-611cc.firebaseapp.com",
@@ -49,8 +53,11 @@ $(document).ready(function() {
 
             player1Connected = true;
             var name = snapshot.child("multi-rps/players/1").val().name;
+            var player1Wins = snapshot.child("multi-rps/players/1").val().wins;
+            var player1Losses = snapshot.child("multi-rps/players/1").val().losses;
             $("#box1row1").text(name);
-            player1Name = name;            
+            player1Name = name;
+            $("#box1row3").text(`Wins: ${player1Wins} Losses: ${player1Losses}`);
         } else{
             player1Connected = false;
             $("#box1row1").text("Waiting for Player 1");         
@@ -60,8 +67,11 @@ $(document).ready(function() {
 
             player2Connected = true;
             var name = snapshot.child("multi-rps/players/2").val().name;
+            var player2Wins = snapshot.child("multi-rps/players/2").val().wins;
+            var player2Losses = snapshot.child("multi-rps/players/2").val().losses;            
             $("#box3row1").text(name);
             player2Name = name;
+            $("#box3row3").text(`Wins: ${player2Wins} Losses: ${player2Losses}`);
         } else{
             player2Connected = false;
             $("#box3row1").text("Waiting for Player 2");
@@ -74,9 +84,13 @@ $(document).ready(function() {
                 turn = 1;
 
                 if(player === 1){
+
                     $("#systemMessage2").html(`<h5>It's your turn!</h5>`);
+
+                    showOrHideChoices(true, player);
                 } else{
-                    $("#systemMessage2").html(`<h5>Waiting for ${player1Name} to choose</h5>`);
+
+                    $("#systemMessage2").html(`<h5>Waiting for ${player1Name} to choose.</h5>`);
                 }
 
             } else if(turn !== 2 && parseInt(snapshot.child("multi-rps/turn").val()) === 2){
@@ -84,10 +98,13 @@ $(document).ready(function() {
                 turn = 2;
 
                 if(player === 2){
+
                     $("#systemMessage2").html(`<h5>It's your turn!</h5>`);
 
+                    showOrHideChoices(true, player);
                 } else{
-                    $("#systemMessage2").html(`<h5>Waiting for ${player2Name} to choose</h5>`);
+
+                    $("#systemMessage2").html(`<h5>Waiting for ${player2Name} to choose.</h5>`);
                 } 
             }
         }
@@ -139,3 +156,12 @@ $(document).ready(function() {
 
     });
 });
+
+function showOrHideChoices(show, player){
+
+    if(show === true){
+        $(".choices" + player.toString()).show();
+    } else{
+        $(".choices" + player.toString()).hide();    
+    }
+}

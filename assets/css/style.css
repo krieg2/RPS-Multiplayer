@@ -16,3 +16,40 @@ body {
 	min-height: 250px;
 	margin: 20px;
 }
+
+#box1row3, #box3row3 {
+	position: absolute;
+	bottom: 0;
+	left: 50px;
+	text-align: center;
+}
+
+#box1row2, #box3row2 {
+	position: absolute;
+	top: 75px;
+	left: 50px;
+	text-align: center;
+}
+
+.choices1, .choices2 {
+    background-color: #FFFFFF;
+    border-style: none;
+    width: 100px;
+    height: 28px;
+    line-height: 28px;
+    font-size: 22px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.choices1:hover, .choices2:hover {
+    background-color: #FFFFFF;
+    border: 2px solid #87CEFA;
+    width: 100px;
+    height: 28px;
+    line-height: 28px;
+    font-size: 22px;
+    text-align: center;
+    margin: 0 auto;
+    cursor: pointer;
+}
