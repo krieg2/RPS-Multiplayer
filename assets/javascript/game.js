@@ -99,6 +99,9 @@ $(document).ready(function() {
 
                 turn = 1;
 
+                $("#box3border").css({"border-color": "black"});
+                $("#box1border").css({"border-color": "lightgreen"});
+
                 if(player === 1){
 
                     $("#systemMessage2").html(`<h5>It's your turn!</h5>`);
@@ -106,13 +109,15 @@ $(document).ready(function() {
                     $("#box1row2").children(".choices").show();
                     $("#box1row2").children(".chosen").hide();
                 } else{
-
                     $("#systemMessage2").html(`<h5>Waiting for ${player1Name} to choose.</h5>`);
                 }
 
             } else if(turn !== 2 && updatedTurn === 2){
 
                 turn = 2;
+
+                $("#box1border").css({"border-color": "black"});
+                $("#box3border").css({"border-color": "lightgreen"});
 
                 if(player === 2){
 
@@ -121,7 +126,6 @@ $(document).ready(function() {
                     $("#box3row2").children(".choices").show();
                     $("#box3row2").children(".chosen").hide();
                 } else{
-
                     $("#systemMessage2").html(`<h5>Waiting for ${player2Name} to choose.</h5>`);
                 } 
             }
@@ -214,11 +218,15 @@ $(document).ready(function() {
         } else if((choice1 === "Rock" && choice2 === rWins) ||
                   (choice1 === "Paper" && choice2 === pWins) ||
                   (choice1 === "Scissors" && choice2 === sWins)){
+
+                    $("#result").html("<p>" + player1Name + " Wins!</p>");
                     wins1++;
                     losses2++;
         } else if((choice2 === "Rock" && choice1 === rWins) ||
                   (choice2 === "Paper" && choice1 === pWins) ||
                   (choice2 === "Scissors" && choice1 === sWins)){
+
+                    $("#result").html("<p>" + player2Name + " Wins!</p>");
                     wins2++;
                     losses1++;
         }

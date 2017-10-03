@@ -17,15 +17,7 @@ body {
 	margin: 10px;
 	text-align: center;
 }
-/*
-#box1row3, #box3row3 {
-	display: inline;
-}
 
-#box1row2, #box3row2 {
-	display: inline;
-}
-*/
 .choices {
     background-color: #FFFFFF;
     border-style: none;
@@ -49,16 +41,23 @@ body {
     cursor: pointer;
 }
 
-.chosen {
+.chosen, #result {
     font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
     font-size: 50px;
 }
 
-.rows{
+.rows {
     min-height: 33%;
 }
 
-.lastRow{
+.lastRow {
     display: flex;
     align-items: flex-end;
+}
+
+#result {
+    display: flex;
+    align-items: safe center;
+    text-align: center;
+    overflow: scroll;
 }
