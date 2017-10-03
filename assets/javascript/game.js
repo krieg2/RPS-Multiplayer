@@ -9,7 +9,7 @@ var player2Name = "";
 var rWins = "Scissors";
 var pWins = "Rock";
 var sWins = "Paper";
-
+var timerId = 0;
 
 $(document).ready(function() {
 
@@ -91,9 +91,7 @@ $(document).ready(function() {
 
                 compareResults(snapshot);
 
-                database.ref("multi-rps").update({
-                    'turn': 1
-                });
+                timerId = setTimeout(nextRound, 5000);
 
             } else if(turn !== 1 && updatedTurn === 1){
 
@@ -231,6 +229,19 @@ $(document).ready(function() {
                     losses1++;
         }
 
+        var boxRow = "";
+        var val = "";
+        if(player === 1){
+            boxRow = "#box3row2";
+            val = choice2;
+        } else if(player === 2){
+            boxRow = "#box1row2";
+            val = choice1;
+        }
+        var chosen = $(boxRow).children(".chosen");
+        chosen.text(val);
+        chosen.show();
+
         database.ref("multi-rps/players/1").update({
                     'wins': wins1,
                     'losses': losses1
@@ -239,7 +250,17 @@ $(document).ready(function() {
                     'wins': wins2,
                     'losses': losses2
         });
-    }    
+    }
+
+    function nextRound(){
+
+        $(".chosen").hide();
+        $("#result").empty();
+
+        database.ref("multi-rps").update({
+            'turn': 1
+        });
+    }
 });
 
 
