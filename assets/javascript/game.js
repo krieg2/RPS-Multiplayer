@@ -10,6 +10,7 @@ var rWins = "Scissors";
 var pWins = "Rock";
 var sWins = "Paper";
 var timerId = 0;
+var chat = [];
 
 $(document).ready(function() {
 
@@ -31,6 +32,10 @@ $(document).ready(function() {
 
     var database = firebase.database();
 
+    /* On first page load, check if both players 1 and 2
+       exist. If they do, then remove everything. If only
+       1 exists, then this means player 1 is waiting.
+    */
     database.ref().once("value", function(snapshot) {
 
         if(snapshot.child("multi-rps/players/1").exists() &&
@@ -49,9 +54,19 @@ $(document).ready(function() {
         console.log("Errors handled: " + errorObject.code);
     });
 
+    //Get a reference to the chat element.
+    var chatRef = firebase.database().ref("multi-rps/chat");
+
+    //Handle updates to chat.
+    chatRef.on("child_added", function(data) {
+
+        var text = data.val().message;
+        $("#chatLog").val($("#chatLog").val() + String.fromCharCode(13, 10) + text);
+    });
+
     database.ref().on("value", function(snapshot) {
 
-        console.log(snapshot.val());
+        //console.log(snapshot.val());
 
         if(snapshot.child("multi-rps/players/1").exists()){
 
@@ -128,6 +143,10 @@ $(document).ready(function() {
                 } 
             }
         }
+
+        if(snapshot.child("multi-rps/chat").exists()){
+
+        }
    
     }, function(errorObject) {
 
@@ -201,6 +220,28 @@ $(document).ready(function() {
 
     });
 
+    $("#chat").on("click", function(event){
+
+        event.preventDefault();
+
+        if(player1Connected && player2Connected){
+
+            var text = $("#text").val();
+            $("#text").val("");
+            if(player === 1){
+                text = player1Name + ": " + text;
+            } else {
+                text = player2Name + ": " + text;
+            }
+
+            var newKey = firebase.database().ref().child("multi-rps/chat").push().key;
+            var updates = {};
+            updates["multi-rps/chat/" + newKey] = {message: text};
+
+            database.ref().update(updates);
+        }
+    });
+
     function compareResults(snapshot){
 
         var choice1 = snapshot.child("multi-rps/players/1").val().choice;
@@ -212,7 +253,10 @@ $(document).ready(function() {
 
 
         if(choice1 === choice2){
+
           // Tie game.
+          $("#result").html("<p>Tie Game!</p>");
+
         } else if((choice1 === "Rock" && choice2 === rWins) ||
                   (choice1 === "Paper" && choice2 === pWins) ||
                   (choice1 === "Scissors" && choice2 === sWins)){
@@ -220,6 +264,7 @@ $(document).ready(function() {
                     $("#result").html("<p>" + player1Name + " Wins!</p>");
                     wins1++;
                     losses2++;
+
         } else if((choice2 === "Rock" && choice1 === rWins) ||
                   (choice2 === "Paper" && choice1 === pWins) ||
                   (choice2 === "Scissors" && choice1 === sWins)){
