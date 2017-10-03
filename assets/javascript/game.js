@@ -62,6 +62,8 @@ $(document).ready(function() {
 
         var text = data.val().message;
         $("#chatLog").val($("#chatLog").val() + String.fromCharCode(13, 10) + text);
+
+        $("#chatLog").scrollTop($("#chatLog")[0].scrollHeight);  
     });
 
     database.ref().on("value", function(snapshot) {
