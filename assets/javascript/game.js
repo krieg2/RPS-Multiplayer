@@ -6,12 +6,16 @@ var player = 0;
 var turn = 0;
 var player1Name = "";
 var player2Name = "";
+var rWins = "Scissors";
+var pWins = "Rock";
+var sWins = "Paper";
+
 
 $(document).ready(function() {
 
     //Hide choices.
-    showOrHideChoices(false, 1);
-    showOrHideChoices(false, 2);
+    $(".choices").hide();
+    $(".chosen").hide();
 
     // Initialize Firebase.
     var config = {
@@ -79,7 +83,19 @@ $(document).ready(function() {
 
         if(snapshot.child("multi-rps/turn").exists()){
 
-            if(turn !== 1 && parseInt(snapshot.child("multi-rps/turn").val()) === 1){
+            var updatedTurn = parseInt(snapshot.child("multi-rps/turn").val());
+
+            if(turn !== 3 && updatedTurn === 3){
+
+                turn = 3;
+
+                compareResults(snapshot);
+
+                database.ref("multi-rps").update({
+                    'turn': 1
+                });
+
+            } else if(turn !== 1 && updatedTurn === 1){
 
                 turn = 1;
 
@@ -87,13 +103,14 @@ $(document).ready(function() {
 
                     $("#systemMessage2").html(`<h5>It's your turn!</h5>`);
 
-                    showOrHideChoices(true, player);
+                    $("#box1row2").children(".choices").show();
+                    $("#box1row2").children(".chosen").hide();
                 } else{
 
                     $("#systemMessage2").html(`<h5>Waiting for ${player1Name} to choose.</h5>`);
                 }
 
-            } else if(turn !== 2 && parseInt(snapshot.child("multi-rps/turn").val()) === 2){
+            } else if(turn !== 2 && updatedTurn === 2){
 
                 turn = 2;
 
@@ -101,7 +118,8 @@ $(document).ready(function() {
 
                     $("#systemMessage2").html(`<h5>It's your turn!</h5>`);
 
-                    showOrHideChoices(true, player);
+                    $("#box3row2").children(".choices").show();
+                    $("#box3row2").children(".chosen").hide();
                 } else{
 
                     $("#systemMessage2").html(`<h5>Waiting for ${player2Name} to choose.</h5>`);
@@ -155,13 +173,66 @@ $(document).ready(function() {
         
 
     });
+
+    $(".choices").on("click", function(event){
+
+        var val = $(this).attr("value");
+        
+        database.ref("multi-rps/players/" + player).update({
+                'choice': val
+        });
+
+        var boxRow = "";
+        if(player === 1){
+            boxRow = "#box1row2";
+        } else if(player === 2){
+            boxRow = "#box3row2";
+        }
+        $(boxRow).children(".choices").hide();  
+        var chosen = $(boxRow).children(".chosen");
+        chosen.text(val);
+        chosen.show();
+
+        database.ref("multi-rps").update({
+                'turn': turn+1
+        });
+
+    });
+
+    function compareResults(snapshot){
+
+        var choice1 = snapshot.child("multi-rps/players/1").val().choice;
+        var choice2 = snapshot.child("multi-rps/players/2").val().choice;
+        var wins1 = parseInt(snapshot.child("multi-rps/players/1").val().wins);
+        var wins2 = parseInt(snapshot.child("multi-rps/players/2").val().wins);
+        var losses1 = parseInt(snapshot.child("multi-rps/players/1").val().losses);
+        var losses2 = parseInt(snapshot.child("multi-rps/players/2").val().losses);
+
+
+        if(choice1 === choice2){
+          // Tie game.
+        } else if((choice1 === "Rock" && choice2 === rWins) ||
+                  (choice1 === "Paper" && choice2 === pWins) ||
+                  (choice1 === "Scissors" && choice2 === sWins)){
+                    wins1++;
+                    losses2++;
+        } else if((choice2 === "Rock" && choice1 === rWins) ||
+                  (choice2 === "Paper" && choice1 === pWins) ||
+                  (choice2 === "Scissors" && choice1 === sWins)){
+                    wins2++;
+                    losses1++;
+        }
+
+        database.ref("multi-rps/players/1").update({
+                    'wins': wins1,
+                    'losses': losses1
+        });
+        database.ref("multi-rps/players/2").update({
+                    'wins': wins2,
+                    'losses': losses2
+        });
+    }    
 });
 
-function showOrHideChoices(show, player){
 
-    if(show === true){
-        $(".choices" + player.toString()).show();
-    } else{
-        $(".choices" + player.toString()).hide();    
-    }
-}
+
