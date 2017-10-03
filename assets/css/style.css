@@ -14,23 +14,18 @@ body {
 .box {
 	border: 1px solid black;
 	min-height: 250px;
-	margin: 20px;
-}
-
-#box1row3, #box3row3 {
-	position: absolute;
-	bottom: 0;
-	left: 50px;
+	margin: 10px;
 	text-align: center;
+}
+/*
+#box1row3, #box3row3 {
+	display: inline;
 }
 
 #box1row2, #box3row2 {
-	position: absolute;
-	top: 75px;
-	left: 50px;
-	text-align: center;
+	display: inline;
 }
-
+*/
 .choices1, .choices2 {
     background-color: #FFFFFF;
     border-style: none;
@@ -47,9 +42,18 @@ body {
     border: 2px solid #87CEFA;
     width: 100px;
     height: 28px;
-    line-height: 28px;
+    line-height: 24px;
     font-size: 22px;
     text-align: center;
     margin: 0 auto;
     cursor: pointer;
+}
+
+.rows{
+    min-height: 33%;
+}
+
+.lastRow{
+    display: flex;
+    align-items: flex-end;
 }
