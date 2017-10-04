@@ -1,5 +1,3 @@
-
-
 var player1Connected = false;
 var player2Connected = false;
 var player = 0;
@@ -55,7 +53,7 @@ $(document).ready(function() {
     });
 
     //Get a reference to the chat element.
-    var chatRef = firebase.database().ref("multi-rps/chat");
+    var chatRef = database.ref("multi-rps/chat");
 
     //Handle updates to chat.
     chatRef.on("child_added", function(data) {
@@ -67,8 +65,6 @@ $(document).ready(function() {
     });
 
     database.ref().on("value", function(snapshot) {
-
-        //console.log(snapshot.val());
 
         if(snapshot.child("multi-rps/players/1").exists()){
 
@@ -144,10 +140,6 @@ $(document).ready(function() {
                     $("#systemMessage2").html(`<h5>Waiting for ${player2Name} to choose.</h5>`);
                 } 
             }
-        }
-
-        if(snapshot.child("multi-rps/chat").exists()){
-
         }
    
     }, function(errorObject) {
@@ -236,7 +228,7 @@ $(document).ready(function() {
                 text = player2Name + ": " + text;
             }
 
-            var newKey = firebase.database().ref().child("multi-rps/chat").push().key;
+            var newKey = database.ref().child("multi-rps/chat").push().key;
             var updates = {};
             updates["multi-rps/chat/" + newKey] = {message: text};
 
