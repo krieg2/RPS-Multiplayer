@@ -9,6 +9,8 @@ var pWins = "Rock";
 var sWins = "Paper";
 var timerId = 0;
 var chat = [];
+var statusRef1;
+var statusRef2;
 
 $(document).ready(function() {
 
@@ -170,6 +172,9 @@ $(document).ready(function() {
 
             $("#systemMessage1").html(`<h5>Hi ${userName}! You are Player 1</h5>`);
 
+            statusRef1 = database.ref("multi-rps/players/1");
+            statusRef1.onDisconnect().remove();
+
         } else if( !player2Connected ) {
 
             player2Connected = true;
@@ -184,6 +189,9 @@ $(document).ready(function() {
             });
 
             $("#systemMessage1").html(`<h5>Hi ${userName}! You are Player 2</h5>`);
+
+            statusRef2 = database.ref("multi-rps/players/2");
+            statusRef2.onDisconnect().remove();            
         }
         
 
