@@ -32,28 +32,6 @@ $(document).ready(function() {
 
     var database = firebase.database();
 
-    /* On first page load, check if both players 1 and 2
-       exist. If they do, then remove everything. If only
-       1 exists, then this means player 1 is waiting.
-    */
-    database.ref().once("value", function(snapshot) {
-
-        if(snapshot.child("multi-rps/players/1").exists() &&
-           snapshot.child("multi-rps/players/2").exists()){
-
-            database.ref("multi-rps").remove().then(function() {
-                console.log("Remove succeeded.")
-            })
-            .catch(function(error) {
-                console.log("Remove failed: " + error.message)
-            });
-        }
-        
-    }, function(errorObject) {
-
-        console.log("Errors handled: " + errorObject.code);
-    });
-
     //Get a reference to the chat element.
     var chatRef = database.ref("multi-rps/chat");
 
@@ -65,6 +43,8 @@ $(document).ready(function() {
 
         $("#chatLog").scrollTop($("#chatLog")[0].scrollHeight);  
     });
+
+    var currentTurnRef = database.ref("multi-rps/turn");
 
     database.ref().on("value", function(snapshot) {
 
@@ -160,40 +140,51 @@ $(document).ready(function() {
         $("#userName").hide();
         $("#startButton").hide();
         
-        if( !player1Connected ){
+        if( player1Connected && player2Connected ){
+
+            alert("Sorry, Game Full! Try Again Later!");
+
+        } else if( !player1Connected ){
 
             player1Connected = true;
             player = 1;
-            database.ref("multi-rps/players/1").update({
+            statusRef1 = database.ref("multi-rps/players/1");
+            statusRef1.set({
                     'losses': 0,
                     'name': userName,
-                    'wins': 0
+                    'wins': 0,
+                    'choice': null
             });
+            statusRef1.onDisconnect().remove();
+
+            if( player2Connected ){
+                database.ref("multi-rps").update({
+                             'turn': 1
+                });
+            }
 
             $("#systemMessage1").html(`<h5>Hi ${userName}! You are Player 1</h5>`);
-
-            statusRef1 = database.ref("multi-rps/players/1");
-            statusRef1.onDisconnect().remove();
 
         } else if( !player2Connected ) {
 
             player2Connected = true;
             player = 2;
-            database.ref("multi-rps/players/2").update({
+            statusRef2 = database.ref("multi-rps/players/2");
+            statusRef2.set({
                     'losses': 0,
                     'name': userName,
                     'wins': 0
             });
+            statusRef2.onDisconnect().remove();
+
             database.ref("multi-rps").update({
-                    'turn': 1
+                         'turn': 1
             });
 
             $("#systemMessage1").html(`<h5>Hi ${userName}! You are Player 2</h5>`);
 
-            statusRef2 = database.ref("multi-rps/players/2");
-            statusRef2.onDisconnect().remove();            
         }
-        
+        currentTurnRef.onDisconnect().remove();
 
     });
 
