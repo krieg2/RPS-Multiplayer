@@ -34,6 +34,7 @@ $(document).ready(function() {
 
     //Get a reference to the chat element.
     var chatRef = database.ref("multi-rps/chat");
+    chatRef.onDisconnect().remove();
 
     //Handle updates to chat.
     chatRef.on("child_added", function(data) {
