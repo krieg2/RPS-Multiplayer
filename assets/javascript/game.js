@@ -7,6 +7,11 @@ var player2Name = "";
 var rWins = "Scissors";
 var pWins = "Rock";
 var sWins = "Paper";
+var images = {
+    Rock: "assets/images/icons8-rock-filled-100.png",
+    Paper: "assets/images/icons8-powerpoint-100.png",
+    Scissors: "assets/images/icons8-cutting-100.png"
+};
 var timerId = 0;
 var chat = [];
 var statusRef1;
@@ -204,8 +209,14 @@ $(document).ready(function() {
             boxRow = "#box3row2";
         }
         $(boxRow).children(".choices").hide();  
+
         var chosen = $(boxRow).children(".chosen");
-        chosen.text(val);
+        var img = $("<img>");
+        img.attr("src", images[val]);
+        img.css({alt: val, height: "75px", width: "75px"});
+        chosen.empty();
+        chosen.append("<span>"+val+"</span>");
+        chosen.append(img);
         chosen.show();
 
         database.ref("multi-rps").update({
@@ -249,13 +260,13 @@ $(document).ready(function() {
         if(choice1 === choice2){
 
           // Tie game.
-          $("#result").html("<p>Tie Game!</p>");
+          $("#result").html("<p class='mx-auto'>Tie Game!</p>");
 
         } else if((choice1 === "Rock" && choice2 === rWins) ||
                   (choice1 === "Paper" && choice2 === pWins) ||
                   (choice1 === "Scissors" && choice2 === sWins)){
 
-                    $("#result").html("<p>" + player1Name + " Wins!</p>");
+                    $("#result").html("<p class='mx-auto'>" + player1Name + " Wins!</p>");
                     wins1++;
                     losses2++;
 
@@ -263,7 +274,7 @@ $(document).ready(function() {
                   (choice2 === "Paper" && choice1 === pWins) ||
                   (choice2 === "Scissors" && choice1 === sWins)){
 
-                    $("#result").html("<p>" + player2Name + " Wins!</p>");
+                    $("#result").html("<p class='mx-auto'>" + player2Name + " Wins!</p>");
                     wins2++;
                     losses1++;
         }
@@ -277,8 +288,14 @@ $(document).ready(function() {
             boxRow = "#box1row2";
             val = choice1;
         }
+
         var chosen = $(boxRow).children(".chosen");
-        chosen.text(val);
+        var img = $("<img>");
+        img.attr("src", images[val]);
+        img.css({alt: val, height: "75px", width: "75px"});
+        chosen.empty();
+        chosen.append("<span>"+val+"</span>");
+        chosen.append(img);        
         chosen.show();
 
         database.ref("multi-rps/players/1").update({
