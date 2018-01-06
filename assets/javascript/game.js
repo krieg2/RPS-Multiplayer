@@ -8,9 +8,9 @@ var rWins = "Scissors";
 var pWins = "Rock";
 var sWins = "Paper";
 var images = {
-    Rock: "assets/images/icons8-rock-filled-100.png",
-    Paper: "assets/images/icons8-powerpoint-100.png",
-    Scissors: "assets/images/icons8-cutting-100.png"
+    Rock: "./assets/images/icons8-rock-filled-100.png",
+    Paper: "./assets/images/icons8-powerpoint-100.png",
+    Scissors: "./assets/images/icons8-cutting-100.png"
 };
 var timerId = 0;
 var chat = [];
