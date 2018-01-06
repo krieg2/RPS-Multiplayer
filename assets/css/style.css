@@ -1,21 +1,21 @@
 h1 {
-	color: white;
-	background-color: #87CEFA;
-	text-align: center;
-	font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
-	padding: 10px;
+    color: black;
+    background-color: #87CEFA;
+    text-align: center;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+    padding: 10px;
 }
 
 body {
-	background-color: #e6f3ff;
-	text-align: center;
+    background-color: #e6f3ff;
+    text-align: center;
 }
 
 .box {
-	border: 1px solid black;
-	min-height: 250px;
-	margin: 10px;
-	text-align: center;
+    border: 1px solid black;
+    min-height: 250px;
+    margin: 10px;
+    text-align: center;
 }
 
 .choices {
@@ -60,4 +60,8 @@ body {
     align-items: safe center;
     text-align: center;
     overflow: scroll;
+}
+
+#chat {
+    cursor: pointer;
 }
