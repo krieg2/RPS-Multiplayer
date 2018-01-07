@@ -62,6 +62,6 @@ body {
     text-align: center;
 }
 
-#chat {
+#chat, #startButton {
     cursor: pointer;
 }

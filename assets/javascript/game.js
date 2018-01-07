@@ -142,55 +142,62 @@ $(document).ready(function() {
 
         var userName = $("#userName").val().trim();
 
-        $("#userName").val("");
-        $("#userName").hide();
-        $("#startButton").hide();
-        
-        if( player1Connected && player2Connected ){
+        if(userName === undefined || userName === ""){
 
-            alert("Sorry, Game Full! Try Again Later!");
+            alert("Please type your name and then click start.");
 
-        } else if( !player1Connected ){
+        } else{
 
-            player1Connected = true;
-            player = 1;
-            statusRef1 = database.ref("multi-rps/players/1");
-            statusRef1.set({
-                    'losses': 0,
-                    'name': userName,
-                    'wins': 0,
-                    'choice': null
-            });
-            statusRef1.onDisconnect().remove();
+            $("#userName").val("");
+            $("#userName").hide();
+            $("#startButton").hide();
+            
+            if( player1Connected && player2Connected ){
 
-            if( player2Connected ){
+                alert("Sorry, Game Full! Try Again Later!");
+
+            } else if( !player1Connected ){
+
+                player1Connected = true;
+                player = 1;
+                statusRef1 = database.ref("multi-rps/players/1");
+                statusRef1.set({
+                        'losses': 0,
+                        'name': userName,
+                        'wins': 0,
+                        'choice': null
+                });
+                statusRef1.onDisconnect().remove();
+
+                if( player2Connected ){
+                    database.ref("multi-rps").update({
+                                 'turn': 1
+                    });
+                }
+
+                $("#systemMessage1").html(`<h5>Hi ${userName}! You are Player 1</h5>`);
+
+            } else if( !player2Connected ) {
+
+                player2Connected = true;
+                player = 2;
+                statusRef2 = database.ref("multi-rps/players/2");
+                statusRef2.set({
+                        'losses': 0,
+                        'name': userName,
+                        'wins': 0
+                });
+                statusRef2.onDisconnect().remove();
+
                 database.ref("multi-rps").update({
                              'turn': 1
                 });
+
+                $("#systemMessage1").html(`<h5>Hi ${userName}! You are Player 2</h5>`);
+
             }
-
-            $("#systemMessage1").html(`<h5>Hi ${userName}! You are Player 1</h5>`);
-
-        } else if( !player2Connected ) {
-
-            player2Connected = true;
-            player = 2;
-            statusRef2 = database.ref("multi-rps/players/2");
-            statusRef2.set({
-                    'losses': 0,
-                    'name': userName,
-                    'wins': 0
-            });
-            statusRef2.onDisconnect().remove();
-
-            database.ref("multi-rps").update({
-                         'turn': 1
-            });
-
-            $("#systemMessage1").html(`<h5>Hi ${userName}! You are Player 2</h5>`);
-
+            currentTurnRef.onDisconnect().remove();
         }
-        currentTurnRef.onDisconnect().remove();
 
     });
 
