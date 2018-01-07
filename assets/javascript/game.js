@@ -220,9 +220,22 @@ $(document).ready(function() {
         var chosen = $(boxRow).children(".chosen");
         var img = $("<img>");
         img.attr("src", images[val]);
-        img.css({alt: val, height: "75px", width: "75px"});
+        img.css({
+            alt: val,
+            height: "75px",
+            width: "75px"
+        });
+        if(val === "Paper"){
+            img.addClass("animated flipInY");
+        } else if(val === "Rock"){
+            img.addClass("animated bounce");
+        } else if(val === "Scissors"){
+            img.addClass("animated shake");
+        }
         chosen.empty();
-        chosen.append("<span>"+val+"</span>");
+        var par = $("<p>");
+        par.text(val);
+        chosen.append(par);
         chosen.append(img);
         chosen.show();
 
@@ -267,13 +280,14 @@ $(document).ready(function() {
         if(choice1 === choice2){
 
           // Tie game.
-          $("#result").html("<p class='mx-auto'>Tie Game!</p>");
+          $("#result").html("<p class='mx-auto animated swing'>Tie Game!</p>");
 
         } else if((choice1 === "Rock" && choice2 === rWins) ||
                   (choice1 === "Paper" && choice2 === pWins) ||
                   (choice1 === "Scissors" && choice2 === sWins)){
 
-                    $("#result").html("<p class='mx-auto'>" + player1Name + " Wins!</p>");
+                    $("#result").html("<p class='mx-auto animated zoomInDown'>" + 
+                                        player1Name + " Wins!</p>");
                     wins1++;
                     losses2++;
 
@@ -281,7 +295,8 @@ $(document).ready(function() {
                   (choice2 === "Paper" && choice1 === pWins) ||
                   (choice2 === "Scissors" && choice1 === sWins)){
 
-                    $("#result").html("<p class='mx-auto'>" + player2Name + " Wins!</p>");
+                    $("#result").html("<p class='mx-auto animated zoomInDown'>" +
+                                        player2Name + " Wins!</p>");
                     wins2++;
                     losses1++;
         }
@@ -299,9 +314,22 @@ $(document).ready(function() {
         var chosen = $(boxRow).children(".chosen");
         var img = $("<img>");
         img.attr("src", images[val]);
-        img.css({alt: val, height: "75px", width: "75px"});
+        img.css({
+            alt: val,
+            height: "75px",
+            width: "75px"
+        });
+        if(val === "Paper"){
+            img.addClass("animated flipInY");
+        } else if(val === "Rock"){
+            img.addClass("animated bounce");
+        } else if(val === "Scissors"){
+            img.addClass("animated shake");
+        }
         chosen.empty();
-        chosen.append("<span>"+val+"</span>");
+        var par = $("<p>");
+        par.text(val);
+        chosen.append(par);
         chosen.append(img);        
         chosen.show();
 

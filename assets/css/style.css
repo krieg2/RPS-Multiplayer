@@ -47,10 +47,6 @@ body {
     font-size: 36px;
 }
 
-.rows {
-    min-height: 33%;
-}
-
 .lastRow {
     display: flex;
     align-items: flex-end;
